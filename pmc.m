@@ -24,13 +24,6 @@ isafunction= @(x) assert(isa(x,'function_handle'),...
     'This input must be of type "function handle"');
 isaposinteger = @(x) assert((x>0)&&isnumeric(x)&&(round(x)==x),...
     'This input must be a positive integer');
-valid_location =@(x) assert(logical(prod(size(x)==[M,dim])),...
-    'Location initialization is invalid');
-valid_scale=@(x) assert(logical(prod(size(x)==[dim,dim])) && det(x)>0,...
-    'Scale initialization is invalid');
-valid_mixture_size=@(x) assert(x>=1 && x<=M && (round(x)==x),...
-    'Setting for number of partial mixtures is invalid');
-
 
 % Assertions on the required inputs
 isafunction(log_target);
@@ -72,32 +65,40 @@ ResamplingScheme=q.Results.ResamplingScheme;
 fprintf('Using...\n');
 mu_rows=length(mu_init(:,1));
 if(M~=mu_rows || isequal(mu_init,default_mu_init))
-    fprintf('\tDefault location initialization\n');
+    fprintf('\t- Default location initialization\n');
     mu_init=rand(M,dim);
 else
-    fprintf('\tCustomized location initialization\n');
+    fprintf('\t- Customized location initialization\n');
 end
 % Warn the user that a default scale initialization is being used
 if(isequal(sigma_init,default_sigma_init))
-    fprintf('\tDefault scale initialization\n');
+    fprintf('\t- Default scale initialization\n');
 else
-    fprintf('\tCustomized scale initialization\n');
+    fprintf('\t- Customized scale initialization\n');
 end
 switch(WeightingScheme) % Determine q_x depending on weighting scheme
     case 'standard'
-        fprintf('\tStandard weights\n');
+        fprintf('\t- Standard weights\n');
     case 'DM'
-         fprintf('\tDM weights\n');
+         fprintf('\t- DM weights\n');
     case 'partialDM'
-        fprintf('\tPartial DM weights\n');
+        fprintf('\t- Partial DM weights\n');
 end
 switch(ResamplingScheme)
     case 'global'
-        fprintf('\tGlobal resampling\n');
+        fprintf('\t- Global resampling\n');
     case 'local' 
-        fprintf('\tLocal resampling\n');
+        fprintf('\t- Local resampling\n');
 end
 fprintf('\n');
+
+% Assertion functions for optional inputs
+valid_location =@(x) assert(logical(prod(size(x)==[M,dim])),...
+    'Location initialization is invalid');
+valid_scale=@(x) assert(logical(prod(size(x)==[dim,dim])) && det(x)>0,...
+    'Scale initialization is invalid');
+valid_mixture_size=@(x) assert(x>=1 && x<=M && (round(x)==x),...
+    'Setting for number of partial mixtures is invalid');
 
 % Assertions for specified arguments
 valid_location(mu_init);
