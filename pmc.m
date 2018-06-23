@@ -10,10 +10,29 @@ function [X,W,Z] = pmc(log_target,dim,varargin)
 %               drawing a single from a population of proposal distribution.
 %               The location parameters of the proposal are adapted via a
 %               resampling step at each iteration of the algorithm. For the
-%               purpose of simplicity, we assume use a normal distribution
-%               as the target.
-% Inputs:
-%
+%               purpose of simplicity, we use a normal distribution
+%               as the proposal distribution.
+% Inputs:       *Required Inputs*
+%               ------------------
+%               log_target -        log of the target distribution
+%               dim -               dimension of the target distribution
+%               
+%               *Optional Inputs*
+%               ------------------
+%               NumProposals -      specify the number of proposals
+%               NumSamples -        number of samples per proposal
+%               NumIterations -     number of iteratios in algorithm
+%               NumMixtures -       number of mixtures (if using partial DM
+%                                   weighting scheme)
+%               LocationInit -      option to initialize location parameter
+%               ScaleInit -         option to initialize scale parameter
+%               WeightingScheme -   Option to choose a weighting scheme:
+%                                   1) Standard weights
+%                                   2) Deterministic mixture (DM) weights
+%                                   3) Partial DM weights
+%               ResamplingScheme -  Option to choose resampling scheme:
+%                                   1) Global resampling
+%                                   2) Local resampling
 % Outputs:      X -                 complete set of samples
 %               W -                 complete set of weights
 %               Z -                 normalizing constant
@@ -177,6 +196,7 @@ for i=1:I
 end
 % Output the unnormalized set of importance weights
 W=exp(log_W-max_log_w);
+% IS estimate of normalizing constant 
 Z=mean(W).*(exp(max_log_w));
 end
 
