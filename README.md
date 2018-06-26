@@ -7,6 +7,11 @@ an extension in Python.
 ## Contributors
 Yousef El-Laham     - Stony Brook University, NY, USA 
 
+Lingqing Gan        - Stony Brook University, NY, USA
+
+Cagla Tasdemir      - Stony Brook University, NY, USA
+
+Hechuan Wang        - Stony Brook University, NY, USA
+
 Liu Yang            - Stony Brook University, NY, USA
 
-Lingqing Gan        - Stony Brook University, NY, USA
