@@ -1,10 +1,7 @@
 function [X,W,Z] = pmc(log_target,dim,varargin)
-%% test git Hechuan
 %%
 % Title:        Population Monte Carlo
 % Authors:      Yousef El-Laham
-% References:   Original paper
-%               https://amstat.tandfonline.com/doi/pdf/10.1198/106186004X12803
 % Description:  This function runs an adaptive importance sampling
 %               algorithm called population Monte Carlo. The goal of the
 %               methodology is to estimate some target distribution by
