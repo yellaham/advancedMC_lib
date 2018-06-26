@@ -1,5 +1,5 @@
 function [X,W,Z] = pmc(log_target,dim,varargin)
-%%
+%% ~
 % Title:        Population Monte Carlo
 % Authors:      Yousef El-Laham
 % Description:  This function runs an adaptive importance sampling
