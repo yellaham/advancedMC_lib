@@ -47,10 +47,10 @@ isafunction(log_target);
 isaposinteger(dim);
 
 % Default values for optional input arguments
-default_num_proposals=dim*50;
-default_num_samples=1;
+default_num_proposals=dim*10;
+default_num_samples=5;
 default_num_iterations=100;
-default_num_mixtures=1;
+default_num_mixtures=5;
 default_mu_init=rand(default_num_proposals,dim);
 default_sigma_init=eye(dim);
 default_weighting_scheme='standard';
