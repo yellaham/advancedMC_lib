@@ -1,4 +1,5 @@
 function [X,W,Z] = pmc(log_target,dim,varargin)
+%% test git Hechuan
 %%
 % Title:        Population Monte Carlo
 % Authors:      Yousef El-Laham
