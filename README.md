@@ -5,13 +5,15 @@ methodologies to solve Bayesian inference related problems. The library is imple
 an extension in Python. 
 
 ## Contributors
-Yousef El-Laham     - Stony Brook University, NY, USA 
+Monica Bugallo
 
-Lingqing Gan        - Stony Brook University, NY, USA
+Yousef El-Laham     
 
-Cagla Tasdemir      - Stony Brook University, NY, USA
+Lingqing Gan       
 
-Hechuan Wang        - Stony Brook University, NY, USA
+Cagla Tasdemir      
 
-Liu Yang            - Stony Brook University, NY, USA
+Hechuan Wang        
+
+Liu Yang            
 
