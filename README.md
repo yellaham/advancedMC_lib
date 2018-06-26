@@ -7,7 +7,7 @@ an extension in Python.
 ## Contributors
 Monica Bugallo
 
-Yousef El-Laham     
+Yousef El-Laham  (tiny change)   
 
 Lingqing Gan       
 
