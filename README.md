@@ -4,18 +4,3 @@ The purpose of this library is to provide researchers in a wide variety of disci
 methodologies to solve Bayesian inference related problems. The library is implemented for MATLAB users, but we will also work on 
 an extension in Python. 
 
-## Contributors
-Monica Bugallo
-
-Yousef El-Laham
-
-Lingqing Gan
-
-Josue Nassar
-
-Cagla Tasdemir      
-
-Hechuan Wang        
-
-Liu Yang            
-
