@@ -22,7 +22,7 @@ def pmc(log_target, d, D=500, N=1, I=200, bounds=(-10,10)):
 
     # Initialize storage of particles and log weights
     particles = np.zeros((D*N*(I+1), d))
-    log_weights = np.zeros(D*N*(I+1))
+    log_weights = np.ones(D*N*(I+1))*(-np.inf)
 
     # Initialize start counter
     start=0
