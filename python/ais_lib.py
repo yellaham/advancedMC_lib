@@ -1,8 +1,7 @@
 import numpy as np
-import scipy.stats as sp
 from scipy.stats import multivariate_normal as mvn
 
-def pmc(log_target, d, D=500, N=1, I=200, bounds=(-10,10)):
+def pmc(log_target, d, D=100, N=1, I=200, bounds=(-10,10)):
     """
     Runs the population Monte Carlo algorithm
     :param log_target: Logarithm of the target distribution
@@ -21,8 +20,8 @@ def pmc(log_target, d, D=500, N=1, I=200, bounds=(-10,10)):
     sig = np.eye(d)
 
     # Initialize storage of particles and log weights
-    particles = np.zeros((D*N*(I+1), d))
-    log_weights = np.ones(D*N*(I+1))*(-np.inf)
+    particles = np.zeros((D*N*I, d))
+    log_weights = np.ones(D*N*I)*(-np.inf)
 
     # Initialize start counter
     start=0
@@ -31,22 +30,28 @@ def pmc(log_target, d, D=500, N=1, I=200, bounds=(-10,10)):
     for i in range(I):
         # Update start counter
         stop = start + D*N
+
         # Generate children particles
         children = mu + (np.matmul(sig, np.random.randn(D*N, d).T)).T
         particles[start:stop, :] = children
+
         # Compute log proposal
         log_prop = np.array([mvn.logpdf(children[m, :], mean=mu[m, :], cov=sig) for m in range(stop-start)])
+
         # Compute log weights and store
         log_w = log_target(children) - log_prop
         log_weights[start:stop] = log_w
+
         # Convert log weights to standard weights using LSE and normalize
         w = np.exp(log_w - np.max(log_w))
         w = w/np.sum(w)
+
         # Resampling to obtain new parents
         idx = np.random.choice(D*N, D, replace=True, p=w)
         parents = children[idx, :]
         mu = np.repeat(parents, N, axis=0)
+
         # Update the start index
-        start = stop + 1
+        start = stop
 
     return particles, log_weights
