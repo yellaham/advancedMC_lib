@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.stats import multivariate_normal as mvn
+from tqdm import tqdm
 
 class AIS_sampler:
     def __init__(self, X, log_W):
@@ -33,7 +34,8 @@ def pmc(log_target, d, D=50, N=10, I=200, var_prop=1, bounds=(-10,10)):
     start=0
 
     # Loop for the algorithm
-    for i in range(I):
+    print('Running PMC algorithm')
+    for i in tqdm(range(I)):
         # Update start counter
         stop = start + D*N
 
