@@ -8,7 +8,9 @@ dim = 2
 gauss_target = lambda x: sp.multivariate_normal.logpdf(x, mean=np.zeros(dim), cov=np.eye(dim))
 
 # Run PMC
-theta, log_w = ais_lib.pmc(gauss_target, dim)
+result_pmc = ais_lib.pmc(gauss_target, dim)
+theta = result_pmc.particles
+log_w = result_pmc.log_weights
 
 # Convert to standard weights using LSE and normalize
 w = np.exp(log_w-np.max(log_w))

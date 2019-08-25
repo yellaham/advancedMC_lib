@@ -1,7 +1,12 @@
 import numpy as np
 from scipy.stats import multivariate_normal as mvn
 
-def pmc(log_target, d, D=100, N=1, I=200, bounds=(-10,10)):
+class AIS_sampler:
+    def __init__(self, X, log_W):
+        self.particles = X
+        self.log_weights = log_W
+
+def pmc(log_target, d, D=50, N=10, I=200, var_prop=1, bounds=(-10,10)):
     """
     Runs the population Monte Carlo algorithm
     :param log_target: Logarithm of the target distribution
@@ -9,6 +14,7 @@ def pmc(log_target, d, D=100, N=1, I=200, bounds=(-10,10)):
     :param D: Number of proposals
     :param N: Number of samples per proposal
     :param I: Number of iterations
+    :param var_prop: Variance of each proposal distribution
     :param bounds: Prior to generate location parameters over [bounds]**d hypercube
     :return particles, weights, and estimate of normalizing constant
     """
@@ -17,7 +23,7 @@ def pmc(log_target, d, D=100, N=1, I=200, bounds=(-10,10)):
     mu = np.repeat(parents, N, axis=0)
 
     # Initialize the covariance matrix
-    sig = np.eye(d)
+    sig = var_prop*np.eye(d)
 
     # Initialize storage of particles and log weights
     particles = np.zeros((D*N*I, d))
@@ -54,4 +60,7 @@ def pmc(log_target, d, D=100, N=1, I=200, bounds=(-10,10)):
         # Update the start index
         start = stop
 
-    return particles, log_weights
+    # Generate output
+    output = AIS_sampler(particles, log_weights)
+
+    return output
