@@ -2,12 +2,21 @@ import numpy as np
 from scipy.stats import multivariate_normal as mvn
 from tqdm import tqdm
 
+def vectorized_gaussian_logpdf(X, means, covariances):
+    _, d = X.shape
+    constant = d * np.log(2 * np.pi)
+    log_determinants = np.log(np.prod(covariances, axis=1))
+    deviations = X - means
+    inverses = 1 / covariances
+    return -0.5 * (constant + log_determinants +
+        np.sum(deviations * inverses * deviations, axis=1))
+
 class AIS_sampler:
     def __init__(self, X, log_W):
         self.particles = X
         self.log_weights = log_W
 
-def pmc(log_target, d, D=50, N=10, I=200, var_prop=1, bounds=(-10,10)):
+def pmc(log_target, d, D=100, N=1, I=200, var_prop=1, bounds=(-10,10), weighting_scheme="standard"):
     """
     Runs the population Monte Carlo algorithm
     :param log_target: Logarithm of the target distribution
@@ -34,7 +43,6 @@ def pmc(log_target, d, D=50, N=10, I=200, var_prop=1, bounds=(-10,10)):
     start=0
 
     # Loop for the algorithm
-    print('Running PMC algorithm')
     for i in tqdm(range(I)):
         # Update start counter
         stop = start + D*N
@@ -44,7 +52,17 @@ def pmc(log_target, d, D=50, N=10, I=200, var_prop=1, bounds=(-10,10)):
         particles[start:stop, :] = children
 
         # Compute log proposal
-        log_prop = np.array([mvn.logpdf(children[m, :], mean=mu[m, :], cov=sig) for m in range(stop-start)])
+        if weighting_scheme == 'standard':
+            log_prop = vectorized_gaussian_logpdf(children, mu, var_prop*np.ones((D*N,d)))
+            #log_prop = np.array([mvn.logpdf(children[m, :], mean=mu[m, :], cov=sig) for m in range(stop-start)])
+        elif weighting_scheme == 'DM':
+            prop = np.zeros(D*N)
+            for j in range(D):
+                prop += (1/D)*mvn.pdf(children, mean=mu[j, :], cov=sig)
+            log_prop = np.log(prop)
+        else:
+            log_prop = vectorized_gaussian_logpdf(children, mu, var_prop*np.ones((D*N,d)))
+            #log_prop = np.array([mvn.logpdf(children[m, :], mean=mu[m, :], cov=sig) for m in range(stop-start)])
 
         # Compute log weights and store
         log_w = log_target(children) - log_prop
